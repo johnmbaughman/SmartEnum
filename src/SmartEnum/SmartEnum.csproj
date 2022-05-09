@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageId>Ardalis.SmartEnum</PackageId>
     <Title>Ardalis.SmartEnum</Title>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -10,17 +10,16 @@
     <PackageProjectUrl>https://github.com/ardalis/SmartEnum</PackageProjectUrl>
     <Description>Classes to help produce strongly typed smarter enums in .NET.</Description>
     <Summary>Classes to help produce strongly typed smarter enums in .NET.</Summary>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/ardalis/SmartEnum</RepositoryUrl>
     <PackageTags>enum</PackageTags>
-    <PackageReleaseNotes>Adds support for derived SmartEnum types.</PackageReleaseNotes>
-    <Version>1.0.8</Version>
+    <PackageIcon>icon.png</PackageIcon>
+    <Version>2.1.0</Version>
+    <PackageReleaseNotes>Many minor fixes and upgrades to dependent packages. Consolidating all dependent packages to this version.</PackageReleaseNotes>
     <AssemblyName>Ardalis.SmartEnum</AssemblyName>
-    <PackageIconUrl>https://user-images.githubusercontent.com/782127/33497760-facf6550-d69c-11e7-94e4-b3856da259a9.png</PackageIconUrl>
-    <RootNamespace>Ardalis.SmartEnum</RootNamespace>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <LangVersion>7.3</LangVersion>
     <Features>strict</Features>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -32,17 +31,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="1.2.8" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.9.0.7583" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.38.0.46746" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net480' ">
     <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
 </Project>
