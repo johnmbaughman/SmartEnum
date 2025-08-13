@@ -4,10 +4,22 @@ namespace Ardalis.SmartEnum.SystemTextJson
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TEnum"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class SmartEnumValueConverter<TEnum, TValue> : JsonConverter<TEnum>
         where TEnum : SmartEnum<TEnum, TValue>
         where TValue : IEquatable<TValue>, IComparable<TValue>, IConvertible
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.Null)
@@ -16,6 +28,12 @@ namespace Ardalis.SmartEnum.SystemTextJson
             return GetFromValue(ReadValue(ref reader));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
         {
             if (value == null)
@@ -78,6 +96,65 @@ namespace Ardalis.SmartEnum.SystemTextJson
                 return (TValue)(object)reader.GetSingle();
             if (typeof(TValue) == typeof(double))
                 return (TValue)(object)reader.GetDouble();
+            if (typeof(TValue) == typeof(string))
+                return (TValue)(object)reader.GetString();
+
+            throw new ArgumentOutOfRangeException(typeof(TValue).ToString(), $"{typeof(TValue).Name} is not supported.");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="typeToConvert"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public override TEnum ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType != JsonTokenType.PropertyName)
+            {
+                throw new ArgumentException(
+                    $"Unexpected token {reader.TokenType} when parsing a dictionary with smart enum key.");
+            }
+            return GetFromValue(ReadPropertyName(ref reader));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="options"></param>
+        public override void WriteAsPropertyName(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
+        {
+            writer.WritePropertyName(value.Value?.ToString() ?? string.Empty);
+        }
+
+        private TValue ReadPropertyName(ref Utf8JsonReader reader)
+        {
+            if (typeof(TValue) == typeof(bool))
+                return (TValue)(object)Convert.ToBoolean(reader.GetString());
+            if (typeof(TValue) == typeof(byte))
+                return (TValue)(object)Convert.ToByte(reader.GetString());
+            if (typeof(TValue) == typeof(sbyte))
+                return (TValue)(object)Convert.ToSByte(reader.GetString());
+            if (typeof(TValue) == typeof(short))
+                return (TValue)(object)Convert.ToInt16(reader.GetString());
+            if (typeof(TValue) == typeof(ushort))
+                return (TValue)(object)Convert.ToUInt16(reader.GetString());
+            if (typeof(TValue) == typeof(int))
+                return (TValue)(object)Convert.ToInt32(reader.GetString());
+            if (typeof(TValue) == typeof(uint))
+                return (TValue)(object)Convert.ToUInt32(reader.GetString());
+            if (typeof(TValue) == typeof(long))
+                return (TValue)(object)Convert.ToInt64(reader.GetString());
+            if (typeof(TValue) == typeof(ulong))
+                return (TValue)(object)Convert.ToUInt64(reader.GetString());
+            if (typeof(TValue) == typeof(float))
+                return (TValue)(object)Convert.ToSingle(reader.GetString());
+            if (typeof(TValue) == typeof(double))
+                return (TValue)(object)Convert.ToDouble(reader.GetString());
             if (typeof(TValue) == typeof(string))
                 return (TValue)(object)reader.GetString();
 
